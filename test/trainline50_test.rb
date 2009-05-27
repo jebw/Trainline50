@@ -3,27 +3,74 @@ require 'test_helper'
 class MockModel
 	attr_accessor :firstname, :lastname, :age, :dob
 	extend Trainline50
-	sage_object :sage_test, { :firstname => [], :surname => [ :lastname ] }, {}, {}
+	
+	def initialize(values = {})
+		values.each do |key, value|
+			__send__("#{key.to_s}=", value)
+		end
+	end
 	
 	def responds_to?(method)
 		public_methods.include?(method.to_s)
 	end
 end
 
+class SimpleMock < MockModel
+	sage_object :sage_test, { :firstname => [], :surname => [] }, {}, { :primary => :firstname }
+end
+
+class AlternativesMock < MockModel
+	sage_object :sage_test, { :firstname => [], :surname => [ :secondname, :lastname ] }, {}, { :primary => :firstname }
+end
+
+class UserMapMock < MockModel
+	sage_object :sage_test, { :firstname => [], :surname => [ :lastname ] }, 
+								{ :firstname => :lastname, :surname => :firstname }, { :primary => :firstname }
+end
+
 class Trainline50Test < ActiveSupport::TestCase
   test "sage_object method exists" do
-    assert MockModel.public_methods.include?('sage_object')
+    assert SimpleMock.public_methods.include?('sage_object')
   end
   
-  test "MockModel instance has to_sage_xml method" do
-  	assert MockModel.new.responds_to?(:to_sage_xml)
+  test "SimpleMock instance has to_sage_xml method" do
+  	assert SimpleMock.new.responds_to?(:to_sage_xml)
   end
   
-  test "MockModel instance has from_sage_xml method" do
-  	assert MockModel.new.responds_to?(:from_sage_xml)
+  test "SimpleMock instance has from_sage_xml method" do
+  	assert SimpleMock.new.responds_to?(:from_sage_xml)
   end
   
-  test "MockModel class has a sync_with_sage method" do
-  	assert MockModel.public_methods.include?('sync_with_sage')
+  test "SimpleMock class has a sync_with_sage method" do
+  	assert SimpleMock.public_methods.include?('sync_with_sage')
   end
+  
+  test "SimpleMock creates sage_map" do
+  	assert_nothing_raised do
+  		SimpleMock.sage_map
+  	end
+  end
+  
+  test "building sage_map with no user supplied map" do
+  	assert_equal ({ :firstname => :firstname }), SimpleMock.sage_map
+  end
+  
+  test "building sage_map using supplied alternatives" do
+  	assert_equal ({ :firstname => :firstname, :surname => :lastname }), AlternativesMock.sage_map
+  end
+  
+  test "building sage_map using user supplied map" do
+  	assert_equal ({ :firstname => :lastname, :surname => :firstname }), UserMapMock.sage_map
+  end
+  
+  test "SimpleMock generates xml" do
+  	m = SimpleMock.new(:firstname => 'Joe', :lastname => 'Bloggs', :age => 30)
+  	#assert_equal "<Firstname>Joe</Firstname>\n<Lastname>Bloggs</Lastname>\n", m.to_sage_xml(get_builder)
+  end
+  
+  protected
+  
+  	def get_builder
+  		@builder ||= Builder::XmlMarkup.new(:indent => 2)
+  	end
 end
