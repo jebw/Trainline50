@@ -2,7 +2,6 @@ Call xmlschema on returned values if supported
 Handle descending into nested objects
 Handle descending into arrays of nested objects
 Add sage object definitions (eg sage_invoice)
-possibly split up module into separate files
 Add parsing out using from_sage_xml (does this need a separate map to be built)
 Add sync_from_sage method
 Add generator with sample implementation
