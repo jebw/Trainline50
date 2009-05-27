@@ -14,31 +14,30 @@ class MockModel
 end
 
 class SimpleMock < MockModel
-	sage_object :sage_test, { :firstname => [], :surname => [] }, {}, { :primary => :firstname }
+	sage_object :sage_test, [ :firstname, :surname ], {}, { :primary => :firstname }
 end
 
 class AlternativesMock < MockModel
-	sage_object :sage_test, { :firstname => [], :surname => [ :secondname, :lastname ] }, {}, { :primary => :firstname }
+	sage_object :sage_test, [ :firstname, [ :surname, :secondname, :lastname ] ], {}, { :primary => :firstname }
 end
 
 class UserMapMock < MockModel
-	sage_object :sage_test, { :firstname => [], :surname => [ :lastname ] }, 
+	sage_object :sage_test, [ :firstname, [ :surname, :lastname ] ],
 								{ :firstname => :lastname, :surname => :firstname }, { :primary => :firstname }
 end
 
 class UserMapMockWithStatics < MockModel
-	sage_object :sage_test, { :firstname => [], :code => [], :type => [] }, 
-								{ :code => 17, :type => 'Foo' }, { :primary => :firstname }
+	sage_object :sage_test, [ :firstname, :code, :type ],	{ :code => 17, :type => 'Foo' }, { :primary => :firstname }
 end
 
 class UserMapMockWithProc < MockModel
-	sage_object :sage_test, { :firstname => [], :proctest => []}, 
+	sage_object :sage_test, [ :firstname, :proctest ],
 								{ :proctest => Proc.new { |o| "#{o.firstname} #{o.lastname}" } }, { :primary => :firstname}
 end
 
 class ParentMock < MockModel
 	attr_accessor :name, :child
-	sage_object :sage_test, { :parent => [], :child => [], :grandchild => []},
+	sage_object :sage_test, [ :parent, :child, :grandchild ],
 									{ :parent => :name, :child => :child__name, :grandchild => :child__child__name }, { :primary => :firstname}
 	
 	def initialize(*args)

@@ -4,8 +4,11 @@ module Trainline50
 		
 		def build_sage_map(fields, user_map)
 			instance = self.new
-			map = {}
-			fields.each do |field, alternatives|
+			map = ActiveSupport::OrderedHash.new
+			fields.each do |alternatives|
+				alternatives = [ alternatives ] unless alternatives.kind_of?(Array)
+				field = alternatives.shift
+				
 				map[field] = if user_map.has_key?(field)
 					user_map[field]
 				elsif instance.responds_to?(field)
