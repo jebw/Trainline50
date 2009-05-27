@@ -38,22 +38,22 @@ class Trainline50Test < ActiveSupport::TestCase
   
   test "AlternativesMock generates xml" do
   	m = AlternativesMock.new(:firstname => 'Joe', :lastname => 'Bloggs', :age => 30)
-  	assert_equal "<Firstname>Joe</Firstname>\n<Surname>Bloggs</Surname>\n", m.to_sage_xml(get_builder)
+  	assert_equal "<Firstname>Joe</Firstname>\n<Surname>Bloggs</Surname>\n", m.to_sage_xml(get_builder).target!
   end
   
   test "static values in user supplied map" do
   	m = UserMapMockWithStatics.new(:firstname => 'Joe', :lastname => 'Bloggs')
-  	assert_equal "<Firstname>Joe</Firstname>\n<Code>17</Code>\n<Type>Foo</Type>\n", m.to_sage_xml(get_builder)
+  	assert_equal "<Firstname>Joe</Firstname>\n<Code>17</Code>\n<Type>Foo</Type>\n", m.to_sage_xml(get_builder).target!
   end
   
   test "proc objects in user supplied map" do
   	m = UserMapMockWithProc.new(:firstname => 'Joe', :lastname => 'Bloggs')
-  	assert_equal "<Firstname>Joe</Firstname>\n<Proctest>Joe Bloggs</Proctest>\n", m.to_sage_xml(get_builder)
+  	assert_equal "<Firstname>Joe</Firstname>\n<Proctest>Joe Bloggs</Proctest>\n", m.to_sage_xml(get_builder).target!
   end
   
   test "calling methods on child from user supplied map" do
   	expected_xml = "<Parent>parent</Parent>\n<Child>child</Child>\n<Grandchild>grandchild</Grandchild>\n"
-  	assert_equal expected_xml, ParentMock.new.to_sage_xml(get_builder)
+  	assert_equal expected_xml, ParentMock.new.to_sage_xml(get_builder).target!
   end
   
   protected
