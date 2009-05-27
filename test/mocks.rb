@@ -38,7 +38,7 @@ end
 class ParentMock < MockModel
 	attr_accessor :name, :child
 	sage_object :sage_test, [ :parent, :child, :grandchild ],
-									{ :parent => :name, :child => :child__name, :grandchild => :child__child__name }, { :primary => :firstname}
+									{ :parent => :name, :child => :child__name, :grandchild => :child__child__name }, { :primary => :name }
 	
 	def initialize(*args)
 		super(*args)
@@ -49,4 +49,15 @@ end
 
 class ChildMock < MockModel
 	attr_accessor :name, :child
+	sage_object :sage_test, [ :child_name ], { :child_name => :name }, { :primary => :name }
+end
+
+class ParentMock2 < MockModel
+	attr_accessor :name, :child
+	sage_object :sage_test, [ :name, :child ], {}, { :primary => :name }
+end
+
+class DateMock < MockModel
+	attr_accessor :updated_at
+	sage_object :sage_test, [ :updated_at ], {}, {}
 end

@@ -1,5 +1,3 @@
-Call xmlschema on returned values if supported
-Handle descending into nested objects
 Handle descending into arrays of nested objects
 Add sage object definitions (eg sage_invoice)
 Add parsing out using from_sage_xml (does this need a separate map to be built)

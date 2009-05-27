@@ -16,9 +16,21 @@ module Trainline50
 			end
 		end
 		
+		def write_sage_tag(tag, value, xml)
+			if value.public_methods.include?('to_sage_xml')
+				xml.tag!(tag) do
+					value.to_sage_xml(xml)
+				end
+			elsif value.public_methods.include?('xmlschema')
+				xml.tag! tag, value.xmlschema
+			else
+				xml.tag! tag, value
+			end
+		end
+		
 		def to_sage_xml(xml)
 			self.class.sage_map.each do |sage, ar|
-				xml.tag! sage.to_s.camelize, process_sage_field(ar)
+				write_sage_tag sage.to_s.camelize, process_sage_field(ar), xml
 			end
 			xml
 		end

@@ -56,6 +56,17 @@ class Trainline50Test < ActiveSupport::TestCase
   	assert_equal expected_xml, ParentMock.new.to_sage_xml(get_builder).target!
   end
   
+  test "nesting of output xml" do
+  	m = ParentMock2.new(:name => 'parent', :child => ChildMock.new(:name => 'child'))
+  	expected_xml = "<Name>parent</Name>\n<Child>\n  <ChildName>child</ChildName>\n</Child>\n"
+  	assert_equal expected_xml, m.to_sage_xml(get_builder).target!
+  end
+  
+  test "xmlschema is called when generating xml" do
+  	m = DateMock.new(:updated_at => Time.now)
+  	assert_equal "<UpdatedAt>#{m.updated_at.xmlschema}</UpdatedAt>\n", m.to_sage_xml(get_builder).target! 
+  end
+  
   protected
   
   	def get_builder
