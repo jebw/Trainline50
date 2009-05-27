@@ -38,6 +38,22 @@ class UserMapMockWithProc < MockModel
 								{ :proctest => Proc.new { |o| "#{o.firstname} #{o.lastname}" } }, { :primary => :firstname}
 end
 
+class ParentMock < MockModel
+	attr_accessor :name, :child
+	sage_object :sage_test, { :parent => [], :child => [], :grandchild => []},
+									{ :parent => :name, :child => :child__name, :grandchild => :child__child__name }, { :primary => :firstname}
+	
+	def initialize(*args)
+		super(*args)
+		self.name = 'parent'
+		self.child = ChildMock.new(:name => 'child', :child => ChildMock.new(:name => 'grandchild'))
+	end
+end
+
+class ChildMock < MockModel
+	attr_accessor :name, :child
+end
+
 class Trainline50Test < ActiveSupport::TestCase
   test "sage_object method exists" do
     assert SimpleMock.public_methods.include?('sage_object')
@@ -86,6 +102,11 @@ class Trainline50Test < ActiveSupport::TestCase
   test "proc objects in user supplied map" do
   	m = UserMapMockWithProc.new(:firstname => 'Joe', :lastname => 'Bloggs')
   	assert_equal "<Firstname>Joe</Firstname>\n<Proctest>Joe Bloggs</Proctest>\n", m.to_sage_xml(get_builder)
+  end
+  
+  test "calling methods on child from user supplied map" do
+  	expected_xml = "<Parent>parent</Parent>\n<Child>child</Child>\n<Grandchild>grandchild</Grandchild>\n"
+  	assert_equal expected_xml, ParentMock.new.to_sage_xml(get_builder)
   end
   
   protected

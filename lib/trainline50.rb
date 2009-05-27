@@ -29,7 +29,11 @@ module Trainline50
 	
 		define_method "process_sage_field" do |value|
 			if value.is_a?(Symbol)
-				__send__(value)
+				obj = self
+				value.to_s.split('__').each do |method| 
+					obj = obj.__send__(method)
+				end
+				obj
 			elsif value.is_a?(Proc)
 				value.call(self)
 			else
