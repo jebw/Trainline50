@@ -28,6 +28,16 @@ class UserMapMock < MockModel
 								{ :firstname => :lastname, :surname => :firstname }, { :primary => :firstname }
 end
 
+class UserMapMockWithStatics < MockModel
+	sage_object :sage_test, { :firstname => [], :code => [], :type => [] }, 
+								{ :code => 17, :type => 'Foo' }, { :primary => :firstname }
+end
+
+class UserMapMockWithProc < MockModel
+	sage_object :sage_test, { :firstname => [], :proctest => []}, 
+								{ :proctest => Proc.new { |o| "#{o.firstname} #{o.lastname}" } }, { :primary => :firstname}
+end
+
 class Trainline50Test < ActiveSupport::TestCase
   test "sage_object method exists" do
     assert SimpleMock.public_methods.include?('sage_object')
@@ -63,9 +73,19 @@ class Trainline50Test < ActiveSupport::TestCase
   	assert_equal ({ :firstname => :lastname, :surname => :firstname }), UserMapMock.sage_map
   end
   
-  test "SimpleMock generates xml" do
+  test "AlternativesMock generates xml" do
   	m = AlternativesMock.new(:firstname => 'Joe', :lastname => 'Bloggs', :age => 30)
   	assert_equal "<Firstname>Joe</Firstname>\n<Surname>Bloggs</Surname>\n", m.to_sage_xml(get_builder)
+  end
+  
+  test "static values in user supplied map" do
+  	m = UserMapMockWithStatics.new(:firstname => 'Joe', :lastname => 'Bloggs')
+  	assert_equal "<Firstname>Joe</Firstname>\n<Code>17</Code>\n<Type>Foo</Type>\n", m.to_sage_xml(get_builder)
+  end
+  
+  test "proc objects in user supplied map" do
+  	m = UserMapMockWithProc.new(:firstname => 'Joe', :lastname => 'Bloggs')
+  	assert_equal "<Firstname>Joe</Firstname>\n<Proctest>Joe Bloggs</Proctest>\n", m.to_sage_xml(get_builder)
   end
   
   protected
