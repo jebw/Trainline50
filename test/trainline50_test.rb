@@ -64,8 +64,8 @@ class Trainline50Test < ActiveSupport::TestCase
   end
   
   test "SimpleMock generates xml" do
-  	m = SimpleMock.new(:firstname => 'Joe', :lastname => 'Bloggs', :age => 30)
-  	#assert_equal "<Firstname>Joe</Firstname>\n<Lastname>Bloggs</Lastname>\n", m.to_sage_xml(get_builder)
+  	m = AlternativesMock.new(:firstname => 'Joe', :lastname => 'Bloggs', :age => 30)
+  	assert_equal "<Firstname>Joe</Firstname>\n<Surname>Bloggs</Surname>\n", m.to_sage_xml(get_builder)
   end
   
   protected

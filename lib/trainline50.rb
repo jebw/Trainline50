@@ -28,7 +28,10 @@ module Trainline50
 		self.sage_map = build_sage_map(fields, user_map)
 	
 		define_method "to_sage_xml" do |xml|
-			xml.tag! 'Foo', 'bar'
+			self.class.sage_map.each do |sage, ar|
+				xml.tag! sage.to_s.camelize, __send__(ar)
+			end
+			xml
 		end
 		
 		define_method "from_sage_xml" do
