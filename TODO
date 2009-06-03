@@ -4,6 +4,4 @@ Add parsing out using from_sage_xml (does this need a separate map to be built)
 Add sync_from_sage method
 Add generator with sample implementation
 Add README
-mark most methods as private - both class and instance
-Refactor into SageProxy class
 Make tests runnable outside of test:plugins
