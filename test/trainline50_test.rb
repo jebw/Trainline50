@@ -3,9 +3,13 @@ require File.join(File.dirname(__FILE__), 'mocks.rb')
 
 class Trainline50Test < ActiveSupport::TestCase
   test "sage_object method exists" do
-    assert SimpleMock.public_methods.include?('sage_object')
+    assert SimpleMock.responds_to?(:sage_object)
   end
   
+  test "SimpleMock class has a sage attribute accessor" do
+  	assert SimpleMock.responds_to?(:sage)
+  end
+    
   test "SimpleMock instance has to_sage_xml method" do
   	assert SimpleMock.new.responds_to?(:to_sage_xml)
   end
@@ -14,26 +18,34 @@ class Trainline50Test < ActiveSupport::TestCase
   	assert SimpleMock.new.responds_to?(:from_sage_xml)
   end
   
-  test "SimpleMock class has a sync_with_sage method" do
-  	assert SimpleMock.public_methods.include?('sync_with_sage')
+  test "SimpleMocks SageProxy class has a to_xml method" do
+  	assert SimpleMock.sage.public_methods.include?('to_xml')
   end
   
-  test "SimpleMock creates sage_map" do
+  test "SimpleMocks SageProxy class has a from_xml method" do
+  	assert SimpleMock.sage.public_methods.include?('from_xml')
+  end
+  
+  test "SimpleMocks SageProxy class has a sync method" do
+  	assert SimpleMock.sage.public_methods.include?('sync')
+  end
+  
+  test "SimpleMock creates sage map" do
   	assert_nothing_raised do
-  		SimpleMock.sage_map
+  		SimpleMock.sage.map
   	end
   end
   
   test "building sage_map with no user supplied map" do
-  	assert_equal ({ :firstname => :firstname }), SimpleMock.sage_map
+  	assert_equal ({ :firstname => :firstname }), SimpleMock.sage.map
   end
   
   test "building sage_map using supplied alternatives" do
-  	assert_equal ({ :firstname => :firstname, :surname => :lastname }), AlternativesMock.sage_map
+  	assert_equal ({ :firstname => :firstname, :surname => :lastname }), AlternativesMock.sage.map
   end
   
   test "building sage_map using user supplied map" do
-  	assert_equal ({ :firstname => :lastname, :surname => :firstname }), UserMapMock.sage_map
+  	assert_equal ({ :firstname => :lastname, :surname => :firstname }), UserMapMock.sage.map
   end
   
   test "AlternativesMock generates xml" do

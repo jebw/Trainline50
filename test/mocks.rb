@@ -11,6 +11,10 @@ class MockModel
 	def responds_to?(method)
 		public_methods.include?(method.to_s)
 	end
+	
+	def self.responds_to?(method)
+		public_methods.include?(method.to_s)
+	end
 end
 
 class SimpleMock < MockModel

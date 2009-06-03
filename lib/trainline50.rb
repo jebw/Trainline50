@@ -1,14 +1,19 @@
-require 'trainline50/class_methods'
-require 'trainline50/instance_methods'
+#require 'trainline50/class_methods'
+#require 'trainline50/instance_methods'
+require 'trainline50/sage_proxy'
 
 module Trainline50
 	
 	def sage_object(object_type, fields, user_map, options)
-		mattr_accessor :sage_map
-		extend ClassMethods
+		mattr_accessor :sage
+		self.sage = Trainline50::SageProxy.new(self, object_type, fields, user_map, options)
 		
-		self.sage_map = build_sage_map(fields, user_map)
-		include InstanceMethods
+		define_method "to_sage_xml" do |xml|
+			self.class.sage.to_xml(xml, self)
+		end
+		
+		define_method "from_sage_xml" do
+		end
 	end
 	
 end
