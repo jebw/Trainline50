@@ -1,5 +1,3 @@
-#require 'trainline50/class_methods'
-#require 'trainline50/instance_methods'
 require 'trainline50/sage_proxy'
 
 module Trainline50
