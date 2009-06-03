@@ -65,6 +65,14 @@ module Trainline50
 					xml.tag!(tag) do
 						value.to_sage_xml(xml)
 					end
+				elsif value.is_a?(Array)
+					xml.tag!(tag) do
+						value.each do |v|
+							xml.tag!(tag.singularize) do
+								v.to_sage_xml(xml)
+							end
+						end
+					end
 				elsif value.public_methods.include?('xmlschema')
 					xml.tag! tag, value.xmlschema
 				else

@@ -79,6 +79,12 @@ class Trainline50Test < ActiveSupport::TestCase
   	assert_equal "<UpdatedAt>#{m.updated_at.xmlschema}</UpdatedAt>\n", m.to_sage_xml(get_builder).target! 
   end
   
+  test "Nesting multiple child models" do
+  	m = ParentMock3.new(:name => 'parent', :children => [ ChildMock.new(:name => 'child1'), ChildMock.new(:name => 'child2') ])
+  	expected_xml = "<Name>parent</Name>\n<Children>\n  <Child>\n    <ChildName>child1</ChildName>\n  </Child>\n  <Child>\n    <ChildName>child2</ChildName>\n  </Child>\n</Children>\n"
+		assert_equal expected_xml, m.to_sage_xml(get_builder).target!
+  end
+  
   protected
   
   	def get_builder

@@ -61,6 +61,11 @@ class ParentMock2 < MockModel
 	sage_object :sage_test, [ :name, :child ], {}, { :primary => :name }
 end
 
+class ParentMock3 < MockModel
+	attr_accessor :name, :children
+	sage_object :sage_test, [ :name, :children ], {}, { :primary => :name }
+end
+
 class DateMock < MockModel
 	attr_accessor :updated_at
 	sage_object :sage_test, [ :updated_at ], {}, {}
