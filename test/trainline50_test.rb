@@ -32,20 +32,20 @@ class Trainline50Test < ActiveSupport::TestCase
   
   test "SimpleMock creates sage map" do
   	assert_nothing_raised do
-  		SimpleMock.sage.map
+  		SimpleMock.sage.export_map
   	end
   end
   
   test "building sage_map with no user supplied map" do
-  	assert_equal ({ :firstname => :firstname }), SimpleMock.sage.map
+  	assert_equal ({ :firstname => :firstname }), SimpleMock.sage.export_map
   end
   
   test "building sage_map using supplied alternatives" do
-  	assert_equal ({ :firstname => :firstname, :surname => :lastname }), AlternativesMock.sage.map
+  	assert_equal ({ :firstname => :firstname, :surname => :lastname }), AlternativesMock.sage.export_map
   end
   
   test "building sage_map using user supplied map" do
-  	assert_equal ({ :firstname => :lastname, :surname => :firstname }), UserMapMock.sage.map
+  	assert_equal ({ :firstname => :lastname, :surname => :firstname }), UserMapMock.sage.export_map
   end
   
   test "AlternativesMock generates xml" do

@@ -1,16 +1,16 @@
 module Trainline50
 	
 	class SageProxy
-		attr_reader :parent, :object_type, :map, :proxy_options
+		attr_reader :parent, :object_type, :export_map, :proxy_options
 		
 		def initialize(proxy_for, object_type, fields, user_map, options = {})
 			@parent = proxy_for
 			@object_type = object_type
-			@map = build_map(fields, user_map) 
+			@export_map = build_export_map(fields, user_map) 
 			@proxy_options = options
 		end
 		
-		def build_map(fields, user_map)
+		def build_export_map(fields, user_map)
 			instance = self.parent.new
 			map = ActiveSupport::OrderedHash.new
 			fields.each do |alternatives|
@@ -30,7 +30,7 @@ module Trainline50
 		end
 		
 		def to_xml(xml, instance)
-			self.map.each do |sage, ar|
+			self.export_map.each do |sage, ar|
 				write_sage_tag sage.to_s.camelize, process_sage_field(instance, ar), xml
 			end
 			xml
