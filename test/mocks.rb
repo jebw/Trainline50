@@ -70,3 +70,23 @@ class DateMock < MockModel
 	attr_accessor :updated_at
 	sage_object :sage_test, [ :updated_at ], {}, {}
 end
+
+class ImportMock < MockModel
+	attr_accessor :name
+	sage_object :sage_test, [ :name ], {}, { :primary => :name }
+end
+
+class ImportMockWithoutSetter < MockModel
+	attr_reader :name
+	sage_object :sage_test, [ :name ], {}, { :primary => :name }
+end
+
+class ImportMockWithProc < MockModel
+	attr_accessor :name
+	sage_object :sage_test, [ :name, :alt_name ], { :alt_name => Proc.new { |o| o.name } }, { :primary => :name }
+end
+
+class ImportMockWithStatic < MockModel
+	attr_accessor :name
+	sage_object :sage_test, [ :name, :alt_name ], { :alt_name => 'foobar' }, { :primary => :name }
+end

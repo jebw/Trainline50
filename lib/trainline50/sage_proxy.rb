@@ -1,12 +1,13 @@
 module Trainline50
 	
 	class SageProxy
-		attr_reader :parent, :object_type, :export_map, :proxy_options
+		attr_reader :parent, :object_type, :export_map, :import_map, :proxy_options
 		
 		def initialize(proxy_for, object_type, fields, user_map, options = {})
 			@parent = proxy_for
 			@object_type = object_type
-			@export_map = build_export_map(fields, user_map) 
+			@export_map = build_export_map(fields, user_map)
+			@import_map = build_import_map(self.export_map)
 			@proxy_options = options
 		end
 		
@@ -26,6 +27,18 @@ module Trainline50
 				end
 			end
 			map.delete_if {|k,v| v.nil? }
+			map
+		end
+		
+		def build_import_map(emap)
+			instance = self.parent.new
+			map = ActiveSupport::OrderedHash.new
+			emap.each do |key, value|
+				if value.is_a?(Symbol)
+					value = "#{value.to_s}=".to_sym
+					map[key] = value 	if instance.responds_to?(value)
+				end
+			end
 			map
 		end
 		
