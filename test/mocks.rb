@@ -90,3 +90,7 @@ class ImportMockWithStatic < MockModel
 	attr_accessor :name
 	sage_object :sage_test, [ :name, :alt_name ], { :alt_name => 'foobar' }, { :primary => :name }
 end
+
+class ImportMockExcludingAttrs < MockModel
+	sage_object :sage_test, [ :firstname, :lastname ], { :lastname => nil }, { :primary => :firstname } 
+end

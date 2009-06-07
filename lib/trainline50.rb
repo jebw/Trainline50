@@ -10,7 +10,8 @@ module Trainline50
 			self.class.sage.to_xml(xml, self)
 		end
 		
-		define_method "from_sage_xml" do
+		define_method "from_sage_xml" do |elements|
+			self.class.sage.from_xml(elements, self)
 		end
 	end
 	

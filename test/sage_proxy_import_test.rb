@@ -33,6 +33,21 @@ class SageProxyImportTest < ActiveSupport::TestCase
   	assert_equal ({ :name => :name= }), ImportMockWithStatic.sage.import_map
   end
   
+  test "importing from xml" do
+  	m = ImportMock.new
+  	rexml = REXML::Document.new("<SageTest><Name>import</Name></SageTest>")
+  	m.from_sage_xml(rexml.elements['SageTest'])
+  	assert_equal 'import', m.name
+  end
+  
+  test "importing from xml only imports values in map" do
+  	m = ImportMockExcludingAttrs.new
+  	rexml = REXML::Document.new("<SageTest><Firstname>foo</Firstname><Lastname>bar</Lastname></SageTest>")
+  	m.from_sage_xml(rexml.elements['SageTest'])
+  	assert_equal 'foo', m.firstname
+  	assert_nil m.lastname
+  end
+  
   protected
   
   	def get_builder

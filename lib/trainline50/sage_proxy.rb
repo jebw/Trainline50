@@ -49,8 +49,11 @@ module Trainline50
 			xml
 		end
 		
-		def from_xml
-		
+		def from_xml(parent_element, instance)
+			self.import_map.each do |sage, ar|
+				sage = sage.to_s.camelize
+				instance.__send__ ar, parent_element.elements[sage].text unless parent_element.elements[sage].nil?
+			end		
 		end
 		
 		def sync
