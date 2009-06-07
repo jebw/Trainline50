@@ -1,9 +1,7 @@
 Add sage object definitions (eg sage_invoice)
-Add parsing out using from_sage_xml (does this need a separate map to be built)
 Add sync_from_sage method
 Add generator with sample implementation
 Add README
 Make tests runnable outside of test:plugins
 When returned type in to_xml is builder, wrap the returned in a block (same as when ar models are returned)
-Allow multiple proxies on an object to support a model acting as more than one sage data type (ie an Order which also has both addresses inline)
-Add test that methods can be blocked out from to_xml using :method_name => nil in user supplied map 
+Allow multiple proxies on an object to support a model acting as more than one sage data type (ie an Order which also has both addresses inline) 

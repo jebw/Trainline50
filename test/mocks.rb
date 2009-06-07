@@ -39,6 +39,10 @@ class UserMapMockWithProc < MockModel
 								{ :proctest => Proc.new { |o| "#{o.firstname} #{o.lastname}" } }, { :primary => :firstname}
 end
 
+class UserMapMockWithNils < MockModel
+	sage_object :sage_test, [ :firstname, :lastname ], { :lastname => nil }, { :primary => :firstname }
+end
+
 class ParentMock < MockModel
 	attr_accessor :name, :child
 	sage_object :sage_test, [ :parent, :child, :grandchild ],

@@ -13,15 +13,15 @@ class SageProxyExportTest < ActiveSupport::TestCase
   	end
   end
   
-  test "building sage_map with no user supplied map" do
+  test "building export_map with no user supplied map" do
   	assert_equal ({ 'Firstname' => :firstname }), SimpleMock.sage.export_map
   end
   
-  test "building sage_map using supplied alternatives" do
+  test "building export_map using supplied alternatives" do
   	assert_equal ({ 'Firstname' => :firstname, 'Surname' => :lastname }), AlternativesMock.sage.export_map
   end
   
-  test "building sage_map using user supplied map" do
+  test "building export_map using user supplied map" do
   	assert_equal ({ 'Firstname' => :lastname, 'Surname' => :firstname }), UserMapMock.sage.export_map
   end
   
@@ -38,6 +38,12 @@ class SageProxyExportTest < ActiveSupport::TestCase
   test "proc objects in user supplied map" do
   	m = UserMapMockWithProc.new(:firstname => 'Joe', :lastname => 'Bloggs')
   	assert_equal "<Firstname>Joe</Firstname>\n<Proctest>Joe Bloggs</Proctest>\n", m.to_sage_xml(get_builder).target!
+  end
+  
+  test "nils in user supplied map" do
+  	m = UserMapMockWithNils.new(:firstname => 'Joe', :lastname => 'Bloggs')
+  	assert_equal ({ 'Firstname' => :firstname }), m.sage.export_map
+  	assert_equal "<Firstname>Joe</Firstname>\n", m.to_sage_xml(get_builder).target!
   end
   
   test "calling methods on child from user supplied map" do
