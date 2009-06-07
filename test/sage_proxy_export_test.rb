@@ -14,15 +14,15 @@ class SageProxyExportTest < ActiveSupport::TestCase
   end
   
   test "building sage_map with no user supplied map" do
-  	assert_equal ({ :firstname => :firstname }), SimpleMock.sage.export_map
+  	assert_equal ({ 'Firstname' => :firstname }), SimpleMock.sage.export_map
   end
   
   test "building sage_map using supplied alternatives" do
-  	assert_equal ({ :firstname => :firstname, :surname => :lastname }), AlternativesMock.sage.export_map
+  	assert_equal ({ 'Firstname' => :firstname, 'Surname' => :lastname }), AlternativesMock.sage.export_map
   end
   
   test "building sage_map using user supplied map" do
-  	assert_equal ({ :firstname => :lastname, :surname => :firstname }), UserMapMock.sage.export_map
+  	assert_equal ({ 'Firstname' => :lastname, 'Surname' => :firstname }), UserMapMock.sage.export_map
   end
   
   test "AlternativesMock generates xml" do

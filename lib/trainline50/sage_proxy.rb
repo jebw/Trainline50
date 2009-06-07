@@ -18,7 +18,7 @@ module Trainline50
 				alternatives = [ alternatives ] unless alternatives.kind_of?(Array)
 				field = alternatives.shift
 				
-				map[field] = if user_map.has_key?(field)
+				map[field.to_s.camelize] = if user_map.has_key?(field)
 					user_map[field]
 				elsif instance.responds_to?(field)
 					field
@@ -36,6 +36,7 @@ module Trainline50
 			emap.each do |key, value|
 				if value.is_a?(Symbol)
 					value = "#{value.to_s}=".to_sym
+					key = key.to_s.camelize
 					map[key] = value 	if instance.responds_to?(value)
 				end
 			end
@@ -44,14 +45,13 @@ module Trainline50
 		
 		def to_xml(xml, instance)
 			self.export_map.each do |sage, ar|
-				write_sage_tag sage.to_s.camelize, process_sage_field(instance, ar), xml
+				write_sage_tag sage, process_sage_field(instance, ar), xml
 			end
 			xml
 		end
 		
 		def from_xml(parent_element, instance)
 			self.import_map.each do |sage, ar|
-				sage = sage.to_s.camelize
 				instance.__send__ ar, parent_element.elements[sage].text unless parent_element.elements[sage].nil?
 			end		
 		end
