@@ -14,8 +14,8 @@ class SageProxyImportTest < ActiveSupport::TestCase
   end
   
   test "building import map uses methods with setters" do
-  	assert_equal ({ 'Name' => :name }), ImportMock.sage.export_map
-  	assert_equal ({ 'Name' => :name= }), ImportMock.sage.import_map
+  	assert_equal ({ 'Firstname' => :firstname }), ImportMock.sage.export_map
+  	assert_equal ({ 'Firstname' => :firstname= }), ImportMock.sage.import_map
   end
   
   test "building import map excludes methods without setters" do
@@ -24,20 +24,20 @@ class SageProxyImportTest < ActiveSupport::TestCase
   end
   
   test "building import map excludes Proc objects" do
-  	assert_equal [ 'Name', 'AltName' ], ImportMockWithProc.sage.export_map.keys
-  	assert_equal ({ 'Name' => :name= }), ImportMockWithProc.sage.import_map
+  	assert_equal [ 'Firstname', 'AltName' ], ImportMockWithProc.sage.export_map.keys
+  	assert_equal ({ 'Firstname' => :firstname= }), ImportMockWithProc.sage.import_map
   end
   
   test "building import map excludes static values" do
-  	assert_equal ({ 'Name' => :name, 'AltName' => 'foobar' }), ImportMockWithStatic.sage.export_map
-  	assert_equal ({ 'Name' => :name= }), ImportMockWithStatic.sage.import_map
+  	assert_equal ({ 'Firstname' => :firstname, 'AltName' => 'foobar' }), ImportMockWithStatic.sage.export_map
+  	assert_equal ({ 'Firstname' => :firstname= }), ImportMockWithStatic.sage.import_map
   end
   
   test "importing from xml" do
   	m = ImportMock.new
-  	rexml = REXML::Document.new("<SageTest><Name>import</Name></SageTest>")
+  	rexml = REXML::Document.new("<SageTest><Firstname>import</Firstname></SageTest>")
   	m.from_sage_xml(rexml.elements['SageTest'])
-  	assert_equal 'import', m.name
+  	assert_equal 'import', m.firstname
   end
   
   test "importing from xml only imports values in map" do

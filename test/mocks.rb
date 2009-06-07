@@ -72,8 +72,7 @@ class DateMock < MockModel
 end
 
 class ImportMock < MockModel
-	attr_accessor :name
-	sage_object :sage_test, [ :name ], {}, { :primary => :name }
+	sage_object :sage_test, [ :firstname ], {}, { :primary => :firstname }
 end
 
 class ImportMockWithoutSetter < MockModel
@@ -82,13 +81,11 @@ class ImportMockWithoutSetter < MockModel
 end
 
 class ImportMockWithProc < MockModel
-	attr_accessor :name
-	sage_object :sage_test, [ :name, :alt_name ], { :alt_name => Proc.new { |o| o.name } }, { :primary => :name }
+	sage_object :sage_test, [ :firstname, :alt_name ], { :alt_name => Proc.new { |o| o.name } }, { :primary => :firstname }
 end
 
 class ImportMockWithStatic < MockModel
-	attr_accessor :name
-	sage_object :sage_test, [ :name, :alt_name ], { :alt_name => 'foobar' }, { :primary => :name }
+	sage_object :sage_test, [ :firstname, :alt_name ], { :alt_name => 'foobar' }, { :primary => :firstname }
 end
 
 class ImportMockExcludingAttrs < MockModel
